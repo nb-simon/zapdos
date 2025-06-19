@@ -110,15 +110,21 @@
   []
 
   #Source term for deuterium gas
-  #[D2_source]
-  #  type = ReactionFirstOrderLog
-  #  variable = D2
-  #  #v is a constant density of 1e19 m^-3 in log-molar
-  #  v = -11.0058
-  #  _v_eq_u = false
-  #  coefficient = 1
-  #  reaction = FirstOrder
-  #[]
+  [D2_source]
+    type = ReactionFirstOrderLog
+    variable = D2
+    #v is a constant density of 1e20 m^-3 in log-molar
+    #v = -8.70317470904
+    #v is a constant density of 1e18 m^-3 in log-molar
+    #v = -13.308344895
+    #v is a constant density of 1e16 m^-3 in log-molar
+    #v = -17.913515081
+    #v is a constant density of 1e14 m^-3 in log-molar
+    v = -22.518685267
+    _v_eq_u = false
+    coefficient = 1
+    reaction = FirstOrder
+  []
 []
 
 [AuxKernels]
@@ -217,12 +223,12 @@
   []
 
   #Rate constant for source term
-  #[FirstOrder_Reaction]
-  #  type = GenericRateConstant
-  #  reaction = FirstOrder
-  #  reaction_rate_value =  1000000000
-  #  #reaction_rate_value = 1
-  #[]
+  [FirstOrder_Reaction]
+    type = GenericRateConstant
+    reaction = FirstOrder
+    reaction_rate_value =  4.9871352736e+9
+    #reaction_rate_value =  1e+7
+  []
 []
 
 #CRANE's Reactions Action that inputs the reactions as source terms for the variables
@@ -240,15 +246,15 @@
     # For undefine blocks, naming starts at 0
     block = 0
     #Define reactions and coefficients
-    reactions = 'em + D -> em + em + D+         : 25856251254.792084
-                 em + D2 -> em + em + D2+       : 35787716899.37389
-                 em + D2+ -> em + em + D+ + D+  : 12086215582.464874
-                 em + D2 -> em + D + D          :  2563788698.395377
-                 em + D2 -> em + em + D + D+    :  2669678563.960102
-                 em + D2+ -> em + D + D+        : 61629154222.942116
-                 em + D2+ -> D + D              :   135953890.98887977
-                 D+ + D2 -> D + D2+             :  8850168574.12739
-                 D+ + em -> D                   :         536.4987086029923'
+    reactions = 'em + D -> em + em + D+         : 2.5856251254792084e+10
+                 em + D2 -> em + em + D2+       : 3.578771689937389e+10
+                 em + D2+ -> em + em + D+ + D+  : 1.2086215582464874e+10
+                 em + D2 -> em + D + D          : 2.563788698395377e+9
+                 em + D2 -> em + em + D + D+    : 2.669678563960102e+9
+                 em + D2+ -> em + D + D+        : 6.1629154222942116e+10
+                 em + D2+ -> D + D              : 1.3595389098887977e+8
+                 D+ + D2 -> D + D2+             : 8.85016857412739e+9
+                 D+ + em -> D                   : 5.364987086029923e+2'
   []
 []
 
@@ -258,27 +264,27 @@
   [D+_ic]
     type = FunctionIC
     variable = D+
-    function = 'log(1.5e18/6.022e23)'
+    function = 'log(1e19/6.022e23)'
   []
   [em_ic]
     type = FunctionIC
     variable = em
-    function = 'log((1.5e15 + 1.5e18)/6.022e23)'
+    function = 'log((1e19 + 1e14)/6.022e23)'
   []
   [D_ic]
     type = FunctionIC
     variable = D
-    function = 'log(1.5e20/6.022e23)'
+    function = 'log(1e14/6.022e23)'
   []
   [D2_ic]
     type = FunctionIC
     variable = D2
-    function = 'log(1.5e20/6.022e23)'
+    function = 'log(1e14/6.022e23)'
   []
   [D2+_ic]
     type = FunctionIC
     variable = D2+
-    function = 'log(1.5e15/6.022e23)'
+    function = 'log(1e14/6.022e23)'
   []
   #[mean_en_ic]
   #  type = FunctionIC
@@ -327,8 +333,8 @@
 # solve type (Newton, PJFNK, etc.) and tolerances
 [Executioner]
   type = Transient
-  end_time = 4.7495e-2
-  dt = 1e-5
+  end_time = 13.5933
+  dt = 1e-3
   dtmin = 1e-14
   scheme = bdf2
   solve_type = NEWTON
