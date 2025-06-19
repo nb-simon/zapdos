@@ -11,7 +11,10 @@ T = 500
 E = (3*10**14)/(10**8)
 
 #selected reaction
-reaction = 12
+reaction = 1
+
+#determine if constant rate
+const = True
 
 #coefficients (columns for E coeffs, rows for T coeffs)
 if reaction == 1: #AMJUEL H.4 Reaction 2.1.5: H + e --> H+ + 2e
@@ -105,7 +108,7 @@ elif reaction == 7: #AMJUEL H.4 Reaction 2.2.14: e + H2+ --> H + H
     [-1.843926162250E-06, -1.663674537499E-06, 1.308069926896E-05, -7.324021449032E-06, 1.431739868187E-06, -1.085644779665E-07, 1.143164983367E-09, 2.151595003971E-10, -7.052562220005E-12],
     [9.864173150662E-08, -2.212261708468E-07, -4.431749501051E-07, 3.270530731011E-07, -7.282085521177E-08, 6.578253567957E-09, -1.925258267827E-10, -4.217474167519E-12, 2.364754029318E-13],
   ]
-elif reaction == 8: #AMJUEL 
+elif reaction == 8: #AMJUEL
   fittype = 2
   coeffs = [
     [],
@@ -118,7 +121,7 @@ elif reaction == 8: #AMJUEL
     [],
     [],
   ]
-elif reaction == 9: #AMJUEL 
+elif reaction == 9: #AMJUEL
   fittype = 2
   coeffs = [
     [],
@@ -136,7 +139,7 @@ elif reaction == 10: #AMJUEL H.2 Reaction 3.2.3: H+ + H2 --> H + H2+
   coeffs = [
     -2.163099643422E+01, 3.206843053514E+00, -3.369939911269E+00, 1.290238400703E+00, -3.988189754178E-01, 1.462287796966E-01, -3.524154596754E-02, 4.146324082808E-03, -1.846022446828E-04
   ]
-elif reaction == 11: #AMJUEL 
+elif reaction == 11: #AMJUEL
   fittype = 2
   coeffs = [
     [],
@@ -164,30 +167,50 @@ elif reaction == 12: #AMJUEL H.4 Reaction 2.1.8: H+ + e --> H
   ]
 
 ##evaluation
-#numeric coefficient evaluation
-rate = 0
-if fittype == 1:
-  print('Evaluating coefficients fit to T.')
+#initialize rate
+if const == True:
+  rate = 0
+else:
+  rate = ''
+
+#coefficient evaluation
+if fittype == 1 and const == True:
+  print('Constant evaluation of coefficients fit to T.')
   #temperature index
   for n in range(0, 9):
     rate += coeffs[n] * (math.log(T))**n
-elif fittype == 2:
-  print('Evaluating coefficients fit to T and E.')
+elif fittype == 2 and const == True:
+  print('Constant evaluation of coefficients fit to T and E.')
   #temperature index
   for n in range(0, 9):
     #density index
     for m in range(0, 9):
       rate += coeffs[n][m] * (math.log(E))**m * (math.log(T))**n
+elif fittype == 1 and const == False:
+  print('Dynamic evaluation of coefficients fit to T.')
+elif fittype == 2 and const == False:
+  print('Dynamic evaluation of coefficients fit to T and E.')
+  #temperature index
+  for n in range(0, 9):
+    #density index
+    for m in range(0, 9):
+        if n == 8 and m == 8:
+          rate += str(coeffs[n][m]) + '*log(em_density/(10^14))^(' + str(m) + ')*log(T_e)^(' + str(n) + ')'
+        else:
+          rate += str(coeffs[n][m]) + '*log(em_density/(10^14))^(' + str(m) + ')*log(T_e)^(' + str(n) + ') + '
 
-print('Rate in cm^3/s:')
-print(math.exp(rate))
-print('\n')
-print('Rate in m^3/s:')
-print(math.exp(rate) * 10**-6)
-print('\n')
-print('Rate for Zapdos:')
-print(math.exp(rate) * 10**-6 * 6.022e23)
-print('\n')
+if const == True:
+  print('Rate in cm^3/s:')
+  print(math.exp(rate))
+  print('\n')
+  print('Rate in m^3/s:')
+  print(math.exp(rate) * 10**-6)
+  print('\n')
+  print('Rate for Zapdos:')
+  print(math.exp(rate) * 10**-6 * 6.022e23)
+  print('\n')
+else:
+  print(rate)
 
 
 k = 1.380649e-23
