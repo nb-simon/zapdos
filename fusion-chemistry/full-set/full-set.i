@@ -29,10 +29,6 @@
 [Variables]
   [D+]
   []
-  #[T+]
-  #[]
-  #[He+]
-  #[]
   [em]
   []
   [D]
@@ -41,10 +37,6 @@
   []
   [D2+]
   []
-  #[potential]
-  #[]
-  #[mean_en]
-  #[]
 []
 
 [AuxVariables]
@@ -52,14 +44,6 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  #[T+_density]
-  #  order = CONSTANT
-  #  family = MONOMIAL
-  #[]
-  #[He+_density]
-  #  order = CONSTANT
-  #  family = MONOMIAL
-  #[]
   [em_density]
     order = CONSTANT
     family = MONOMIAL
@@ -80,50 +64,30 @@
 
 [Kernels]
   #Adds the time derivative for the variables
-  [D+_time_derv]
+  #[D+_time_derv]
+  [dD+_dt]
     type = TimeDerivative
     variable = D+
   []
-  #[T+_time_derv]
-  #  type = TimeDerivative
-  #  variable = T+
-  #[]
-  #[He+_time_derv]
-  #  type = TimeDerivative
-  #  variable = He+
-  #[]
-  [em_time_derv]
+  #[em_time_derv]
+  [dem_dt]
     type = TimeDerivative
     variable = em
   []
-  [D_time_derv]
+  #[D_time_derv]
+  [dD_dt]
     type = TimeDerivative
     variable = D
   []
-  [D2_time_derv]
+  #[D2_time_derv]
+  [dD2_dt]
     type = TimeDerivative
     variable = D2
   []
-  [D2+_time_derv]
+  #[D2+_time_derv]
+  [dD2+_dt]
     type = TimeDerivative
     variable = D2+
-  []
-
-  #Source term for deuterium gas
-  [D2_source]
-    type = ReactionFirstOrderLog
-    variable = D2
-    #v is a constant density of 1e20 m^-3 in log-molar
-    #v = -8.70317470904
-    #v is a constant density of 1e18 m^-3 in log-molar
-    #v = -13.308344895
-    #v is a constant density of 1e16 m^-3 in log-molar
-    #v = -17.913515081
-    #v is a constant density of 1e14 m^-3 in log-molar
-    v = -22.518685267
-    _v_eq_u = false
-    coefficient = 1
-    reaction = FirstOrder
   []
 []
 
@@ -134,18 +98,6 @@
     density_log = D+
     execute_on = 'LINEAR TIMESTEP_END'
   []
-  #[T+_density_aux]
-  #  type = DensityMoles
-  #  variable = T+_density
-  #  density_log = T+
-  #  execute_on = 'LINEAR TIMESTEP_END'
-  #[]
-  #[He+_density_aux]
-  #  type = DensityMoles
-  #  variable = He+_density
-  #  density_log = He+
-  #  execute_on = 'LINEAR TIMESTEP_END'
-  #[]
   [em_density_aux]
     type = DensityMoles
     variable = em_density
@@ -171,18 +123,6 @@
     execute_on = 'LINEAR TIMESTEP_END'
   []
 []
-
-#[DriftDiffusionAction]
-#  [Plasma]
-#    electrons = em
-#    charged_particle = ?
-#    field = potential
-#    Is_field_unique = ?
-#    mean_energy = mean_en
-#    position_units = ?
-#    Additional_Outputs = 'ElectronTemperature Current EField'
-#  []
-#[]
 
 [Materials]
   [GasBasics]
@@ -221,14 +161,6 @@
     heavy_species_mass = 6.68e-27
     heavy_species_charge = 0.0
   []
-
-  #Rate constant for source term
-  [FirstOrder_Reaction]
-    type = GenericRateConstant
-    reaction = FirstOrder
-    reaction_rate_value =  4.9871352736e+9
-    #reaction_rate_value =  1e+7
-  []
 []
 
 #CRANE's Reactions Action that inputs the reactions as source terms for the variables
@@ -246,16 +178,15 @@
     # For undefine blocks, naming starts at 0
     block = 0
     #Define reactions and coefficients
-    reactions = 'em + D -> em + em + D+         : 2.5856251254792084e+10
-                 em + D2 -> em + em + D2+       : 3.578771689937389e+10
-                 em + D2+ -> em + em + D+ + D+  : 1.2086215582464874e+10
-                 em + D2 -> em + D + D          : 2.563788698395377e+9
-                 em + D2 -> em + em + D + D+    : 2.669678563960102e+9
-                 em + D2+ -> em + D + D+        : 6.1629154222942116e+10
-                 em + D2+ -> D + D              : 1.3595389098887977e+8
+    reactions = 'em + D -> em + em + D+         : 1.7628661330328915e+10
+                 em + D2 -> em + em + D2+       : 2.7182957212183056e+10
+                 em + D2+ -> em + em + D+ + D+  : 6.230347391224091e+9
+                 em + D2 -> em + D + D          : 3.8085391841803265e+9
+                 em + D2 -> em + em + D + D+    : 1.4387980308002887e+9
+                 em + D2+ -> em + D + D+        : 6.643235489590501e+10
+                 em + D2+ -> D + D              : 6.952473833561004e+8
                  D+ + D2 -> D + D2+             : 8.85016857412739e+9
-                 D+ + em -> D                   : 5.364987086029923e+2'
-  []
+                 D+ + em -> D                   : 5.754799703061313e+2'
 []
 
 #Initial conditions for variables.
@@ -264,38 +195,28 @@
   [D+_ic]
     type = FunctionIC
     variable = D+
-    function = 'log(1e19/6.022e23)'
+    function = 'log(1e18/6.022e23)'
   []
   [em_ic]
     type = FunctionIC
     variable = em
-    function = 'log((1e19 + 1e14)/6.022e23)'
+    function = 'log((1e18 + 1e18)/6.022e23)'
   []
   [D_ic]
     type = FunctionIC
     variable = D
-    function = 'log(1e14/6.022e23)'
+    function = 'log(1e20/6.022e23)'
   []
   [D2_ic]
     type = FunctionIC
     variable = D2
-    function = 'log(1e14/6.022e23)'
+    function = 'log(1e20/6.022e23)'
   []
   [D2+_ic]
     type = FunctionIC
     variable = D2+
-    function = 'log(1e14/6.022e23)'
+    function = 'log(1e18/6.022e23)'
   []
-  #[mean_en_ic]
-  #  type = FunctionIC
-  #  variable = mean_en
-  #  function = energy_density_ic_func
-  #[]
-  #[potential_ic]
-  #  type = FunctionIC
-  #  variable = potential
-  #  function = potential_ic_func
-  #[]
 []
 
 [Functions]
@@ -303,14 +224,6 @@
     type = ParsedFunction
     expression = 'log(1.5e20/6.022e23)'
   []
-  #[energy_density_ic_func]
-  #  type = ParsedFunction
-  #  expression = 'log(3./2.) + log(3e20/6.022e23)'
-  #[]
-  #[potential_ic_func]
-  #  type = ParsedFunction
-  #  expression = '1'
-  #[]
 []
 
 #Preconditioning options
@@ -333,10 +246,12 @@
 # solve type (Newton, PJFNK, etc.) and tolerances
 [Executioner]
   type = Transient
-  end_time = 13.5933
-  dt = 1e-3
+  end_time = 1e+5
+  dt = 1e-0
   dtmin = 1e-14
-  scheme = bdf2
+  dtmax = 1e-2
+  #scheme = bdf2
+  #scheme = explicit-euler
   solve_type = NEWTON
   steady_state_detection = true
 
@@ -345,7 +260,7 @@
   petsc_options_value = 'lu NONZERO 1.e-10 1e-3'
 
   nl_rel_tol = 1e-08
-  l_max_its = 20
+  l_max_its = 50
 []
 
 #Defines the output type of the file (multiple output files can be define per run)
