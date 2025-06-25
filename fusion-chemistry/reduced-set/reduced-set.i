@@ -1,8 +1,6 @@
 #Testing implementation of simple fusion reactions at the pedestal
 #Assumptions:
 # temperature = 0.5 keV
-# ionic deuterium density = 3e+20 #/m^3
-# neutral deuterium density = 3e+16 #/m^3
 
 [GlobalParams]
   potential_units = V
@@ -113,9 +111,9 @@
     #Define which material block the reactions take place.
     # For undefine blocks, naming starts at 0
     block = 0
-    #Define reactions and coefficients
-    reactions = 'em + D -> em + em + D+  : 2.5856251254792084e+10
-                 D+ + em -> D            : 5.364987086029923e+2'
+    #Define reactions and coefficients (rates from AMJUEL database at Te = 0.5 keV and ne = 1e+18 #/m^3)
+    reactions = 'em + D -> em + em + D+  : 1.7628661330328915e+10
+                 D+ + em -> D            : 5.754799703061313e+2'
   []
 []
 
@@ -125,17 +123,17 @@
   [D+_ic]
     type = FunctionIC
     variable = D+
-    function = 'log(3e14/6.022e+23)'
+    function = 'log(1e+14/6.022e+23)'
   []
   [em_ic]
     type = FunctionIC
     variable = em
-    function = 'log(3e14/6.022e+23)'
+    function = 'log(1e+14/6.022e+23)'
   []
   [D_ic]
     type = FunctionIC
     variable = D
-    function = 'log(3e+20/6.022e+23)'
+    function = 'log(1e+22/6.022e+23)'
   []
 []
 
@@ -159,9 +157,9 @@
 # solve type (Newton, PJFNK, etc.) and tolerances
 [Executioner]
   type = Transient
-  end_time = 4e+3
-  dt = 1e+0
-  dtmin = 1e-14
+  end_time = 1e+4
+  dt = 1e-2
+  dtmin = 1e-20
   scheme = bdf2
   solve_type = NEWTON
   steady_state_detection = true
