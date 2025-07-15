@@ -142,7 +142,7 @@ Te = '500'
     # For undefine blocks, naming starts at 0
     block = 0
     equation_constants = 'T_e'
-    equation_values = '500'
+    equation_values = '${Te}'
     equation_variables = 'em_density'
     #Define reactions and coefficients
     reactions = 'em + D -> em + em + D+  : {6.022e23 * 1e-6 * exp(-32.4802533034*log(em_density/(1e+14))^(0)*log(T_e)^(0) + -0.05440669186583*log(em_density/(1e+14))^(1)*log(T_e)^(0) + 0.09048888225109*log(em_density/(1e+14))^(2)*log(T_e)^(0) + -0.04054078993576*log(em_density/(1e+14))^(3)*log(T_e)^(0) + 0.008976513750477*log(em_density/(1e+14))^(4)*log(T_e)^(0) + -0.001060334011186*log(em_density/(1e+14))^(5)*log(T_e)^(0) + 6.846238436472e-05*log(em_density/(1e+14))^(6)*log(T_e)^(0) + -2.242955329604e-06*log(em_density/(1e+14))^(7)*log(T_e)^(0) + 2.890437688072e-08*log(em_density/(1e+14))^(8)*log(T_e)^(0) + 14.2533239151*log(em_density/(1e+14))^(0)*log(T_e)^(1) + -0.0359434716076*log(em_density/(1e+14))^(1)*log(T_e)^(1) + -0.02014729121556*log(em_density/(1e+14))^(2)*log(T_e)^(1) + 0.0103977361573*log(em_density/(1e+14))^(3)*log(T_e)^(1) + -0.001771792153042*log(em_density/(1e+14))^(4)*log(T_e)^(1) + 0.0001237467264294*log(em_density/(1e+14))^(5)*log(T_e)^(1) + -3.130184159149e-06*log(em_density/(1e+14))^(6)*log(T_e)^(1) + -3.051994601527e-08*log(em_density/(1e+14))^(7)*log(T_e)^(1) + 1.888148175469e-09*log(em_density/(1e+14))^(8)*log(T_e)^(1) + -6.632235026785*log(em_density/(1e+14))^(0)*log(T_e)^(2) + 0.09255558353174*log(em_density/(1e+14))^(1)*log(T_e)^(2) + -0.005580210154625*log(em_density/(1e+14))^(2)*log(T_e)^(2) + -0.005902218748238*log(em_density/(1e+14))^(3)*log(T_e)^(2) + 0.001295609806553*log(em_density/(1e+14))^(4)*log(T_e)^(2) + -0.0001056721622588*log(em_density/(1e+14))^(5)*log(T_e)^(2) + 4.646310029498e-06*log(em_density/(1e+14))^(6)*log(T_e)^(2) + -1.479612391848e-07*log(em_density/(1e+14))^(7)*log(T_e)^(2) + 2.85225125832e-09*log(em_density/(1e+14))^(8)*log(T_e)^(2) + 2.059544135448*log(em_density/(1e+14))^(0)*log(T_e)^(3) + -0.07562462086943*log(em_density/(1e+14))^(1)*log(T_e)^(3) + 0.01519595967433*log(em_density/(1e+14))^(2)*log(T_e)^(3) + 0.0005803498098354*log(em_density/(1e+14))^(3)*log(T_e)^(3) + -0.0003527285012725*log(em_density/(1e+14))^(4)*log(T_e)^(3) + 3.201533740322e-05*log(em_density/(1e+14))^(5)*log(T_e)^(3) + -1.835196889733e-06*log(em_density/(1e+14))^(6)*log(T_e)^(3) + 9.474014343303e-08*log(em_density/(1e+14))^(7)*log(T_e)^(3) + -2.342505583774e-09*log(em_density/(1e+14))^(8)*log(T_e)^(3) + -0.442537033141*log(em_density/(1e+14))^(0)*log(T_e)^(4) + 0.02882634019199*log(em_density/(1e+14))^(1)*log(T_e)^(4) + -0.00728577148505*log(em_density/(1e+14))^(2)*log(T_e)^(4) + 0.0004643389885987*log(em_density/(1e+14))^(3)*log(T_e)^(4) + 1.145700685235e-06*log(em_density/(1e+14))^(4)*log(T_e)^(4) + 8.493662724988e-07*log(em_density/(1e+14))^(5)*log(T_e)^(4) + -1.001032516512e-08*log(em_density/(1e+14))^(6)*log(T_e)^(4) + -1.476839184318e-08*log(em_density/(1e+14))^(7)*log(T_e)^(4) + 6.047700368169e-10*log(em_density/(1e+14))^(8)*log(T_e)^(4) + 0.06309381861496*log(em_density/(1e+14))^(0)*log(T_e)^(5) + -0.00578868653578*log(em_density/(1e+14))^(1)*log(T_e)^(5) + 0.00150738295525*log(em_density/(1e+14))^(2)*log(T_e)^(5) + -0.0001201550548662*log(em_density/(1e+14))^(3)*log(T_e)^(5) + 6.574487543511e-06*log(em_density/(1e+14))^(4)*log(T_e)^(5) + -9.678782818849e-07*log(em_density/(1e+14))^(5)*log(T_e)^(5) + 5.176265845225e-08*log(em_density/(1e+14))^(6)*log(T_e)^(5) + 1.29155167686e-09*log(em_density/(1e+14))^(7)*log(T_e)^(5) + -9.685157340473e-11*log(em_density/(1e+14))^(8)*log(T_e)^(5) + -0.005620091829261*log(em_density/(1e+14))^(0)*log(T_e)^(6) + 0.000632910556804*log(em_density/(1e+14))^(1)*log(T_e)^(6) + -0.0001527777697951*log(em_density/(1e+14))^(2)*log(T_e)^(6) + 8.270124691336e-06*log(em_density/(1e+14))^(3)*log(T_e)^(6) + 3.224101773605e-08*log(em_density/(1e+14))^(4)*log(T_e)^(6) + 4.377402649057e-08*log(em_density/(1e+14))^(5)*log(T_e)^(6) + -2.622921686955e-09*log(em_density/(1e+14))^(6)*log(T_e)^(6) + -2.259663431436e-10*log(em_density/(1e+14))^(7)*log(T_e)^(6) + 1.161438990709e-11*log(em_density/(1e+14))^(8)*log(T_e)^(6) + 0.0002812016578355*log(em_density/(1e+14))^(0)*log(T_e)^(7) + -3.564132950345e-05*log(em_density/(1e+14))^(1)*log(T_e)^(7) + 7.222726811078e-06*log(em_density/(1e+14))^(2)*log(T_e)^(7) + 1.433018694347e-07*log(em_density/(1e+14))^(3)*log(T_e)^(7) + -1.097431215601e-07*log(em_density/(1e+14))^(4)*log(T_e)^(7) + 7.789031791949e-09*log(em_density/(1e+14))^(5)*log(T_e)^(7) + -4.197728680251e-10*log(em_density/(1e+14))^(6)*log(T_e)^(7) + 3.032260338723e-11*log(em_density/(1e+14))^(7)*log(T_e)^(7) + -8.911076930014e-13*log(em_density/(1e+14))^(8)*log(T_e)^(7) + -6.011143453374e-06*log(em_density/(1e+14))^(0)*log(T_e)^(8) + 8.089651265488e-07*log(em_density/(1e+14))^(1)*log(T_e)^(8) + -1.186212683668e-07*log(em_density/(1e+14))^(2)*log(T_e)^(8) + -2.381080756307e-08*log(em_density/(1e+14))^(3)*log(T_e)^(8) + 6.271173694534e-09*log(em_density/(1e+14))^(4)*log(T_e)^(8) + -5.48301024493e-10*log(em_density/(1e+14))^(5)*log(T_e)^(8) + 3.064611702159e-11*log(em_density/(1e+14))^(6)*log(T_e)^(8) + -1.355903284487e-12*log(em_density/(1e+14))^(7)*log(T_e)^(8) + 2.935080031599e-14*log(em_density/(1e+14))^(8)*log(T_e)^(8))}
@@ -156,17 +156,17 @@ Te = '500'
   [D+_ic]
     type = FunctionIC
     variable = D+
-    function = 'log(1e+14/6.022e+23)'
+    function = 'log(1e+20/6.022e+23)'
   []
   [em_ic]
     type = FunctionIC
     variable = em
-    function = 'log(1e+14/6.022e+23)'
+    function = 'log(1e+20/6.022e+23)'
   []
   [D_ic]
     type = FunctionIC
     variable = D
-    function = 'log(1e+22/6.022e+23)'
+    function = 'log(1e+16/6.022e+23)'
   []
 []
 
@@ -190,7 +190,7 @@ Te = '500'
 # solve type (Newton, PJFNK, etc.) and tolerances
 [Executioner]
   type = Transient
-  end_time = 1e+4
+  end_time = 2e+2
   dt = 1e-2
   dtmin = 1e-20
   scheme = bdf2
