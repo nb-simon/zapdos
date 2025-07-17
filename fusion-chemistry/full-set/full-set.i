@@ -1,7 +1,6 @@
 #Testing implementation of simple fusion reactions at the pedestal
 #Assumptions:
 # temperature = 0.5 keV
-# deuterium density = 3e20 m^-3
 
 [GlobalParams]
   potential_units = V
@@ -27,20 +26,22 @@
 # such as family of shape function and variable order
 # (the default family/order is Lagrange/First)
 [Variables]
-  [D+]
+  #Main species densities in log-molar
+  [Dp]
   []
   [em]
   []
   [D]
   []
-  [D2]
-  []
-  [D2+]
+  #[D2]
+  #[]
+  [D2p]
   []
 []
 
 [AuxVariables]
-  [D+_density]
+  #Converted densities
+  [Dp_density]
     order = CONSTANT
     family = MONOMIAL
   []
@@ -56,7 +57,45 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  [D2+_density]
+  [D2p_density]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+
+  #D2 background gas
+  [D2]
+  []
+
+  #Reaction rates
+  [REI1]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [REI2]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [REI3]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [RDS1]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [RDS2]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [RDS3]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [RDS4]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [RRC]
     order = CONSTANT
     family = MONOMIAL
   []
@@ -64,38 +103,34 @@
 
 [Kernels]
   #Adds the time derivative for the variables
-  #[D+_time_derv]
-  [dD+_dt]
+  [dDp_dt]
     type = TimeDerivative
-    variable = D+
+    variable = Dp
   []
-  #[em_time_derv]
   [dem_dt]
     type = TimeDerivative
     variable = em
   []
-  #[D_time_derv]
   [dD_dt]
     type = TimeDerivative
     variable = D
   []
-  #[D2_time_derv]
-  [dD2_dt]
+  #[dD2_dt]
+  #  type = TimeDerivative
+  #  variable = D2
+  #[]
+  [dD2p_dt]
     type = TimeDerivative
-    variable = D2
-  []
-  #[D2+_time_derv]
-  [dD2+_dt]
-    type = TimeDerivative
-    variable = D2+
+    variable = D2p
   []
 []
 
 [AuxKernels]
-  [D+_density_aux]
+  #Density unit conversions
+  [Dp_density_aux]
     type = DensityMoles
-    variable = D+_density
-    density_log = D+
+    variable = Dp_density
+    density_log = Dp
     execute_on = 'LINEAR TIMESTEP_END'
   []
   [em_density_aux]
@@ -110,17 +145,103 @@
     density_log = D
     execute_on = 'LINEAR TIMESTEP_END'
   []
-  [D2_density_aux]
+  #[D2_density_aux]
+  #  type = DensityMoles
+  #  variable = D2_density
+  #  density_log = D2
+  #  execute_on = 'LINEAR TIMESTEP_END'
+  #[]
+  [D2p_density_aux]
     type = DensityMoles
-    variable = D2_density
-    density_log = D2
+    variable = D2p_density
+    density_log = D2p
     execute_on = 'LINEAR TIMESTEP_END'
   []
-  [D2+_density_aux]
-    type = DensityMoles
-    variable = D2+_density
-    density_log = D2+
-    execute_on = 'LINEAR TIMESTEP_END'
+
+  #Molecular neutral density for background gas case
+  [D2_density_aux]
+    type = ConstantAux
+    variable = D2_density
+    value = 1e+6
+  []
+
+  #Background gas
+  [D2_val]
+    type = ConstantAux
+    variable = D2
+
+    #value = 1e+18
+    #value = -13.308344895
+
+    #value = 1e+16
+    #value = -17.913515081
+
+    #value = 1e+14
+    #value = -22.518685267
+
+    #value = 1e+12
+    #value = -27.123855453
+
+    #value = 1e+10
+    #value = -31.729025639
+
+    #value = 1e+8
+    #value = -36.334195825
+
+    #value = 1e+6
+    value = -40.939366011
+
+    execute_on = INITIAL
+  []
+
+  #Reaction rate calculation
+  [REI1_aux]
+    type = ParsedAux
+    variable = REI1
+    coupled_variables = 'em_density D_density'
+    expression = '(1.7628661330328915e+10*em_density*D_density)/6.022e+23'
+  []
+  [REI2_aux]
+    type = ParsedAux
+    variable = REI2
+    coupled_variables = 'em_density D2_density'
+    expression = '(2.7182957212183056e+10*em_density*D2_density)/6.022e+23'
+  []
+  [REI3_aux]
+    type = ParsedAux
+    variable = REI3
+    coupled_variables = 'em_density D2p_density'
+    expression = '(6.230347391224091e+9*em_density*D2p_density)/6.022e+23'
+  []
+  [RDS1_aux]
+    type = ParsedAux
+    variable = RDS1
+    coupled_variables = 'em_density D2_density'
+    expression = '(3.8085391841803265e+9*em_density*D2_density)/6.022e+23'
+  []
+  [RDS2_aux]
+    type = ParsedAux
+    variable = RDS2
+    coupled_variables = 'em_density D2_density'
+    expression = '(1.4387980308002887e+9*em_density*D2_density)/6.022e+23'
+  []
+  [RDS3_aux]
+    type = ParsedAux
+    variable = RDS3
+    coupled_variables = 'em_density D2p_density'
+    expression = '(6.643235489590501e+10*em_density*D2p_density)/6.022e+23'
+  []
+  [RDS4_aux]
+    type = ParsedAux
+    variable = REI3
+    coupled_variables = 'em_density D2p_density'
+    expression = '(6.952473833561004e+8*em_density*D2p_density)/6.022e+23'
+  []
+  [RRC_aux]
+    type = ParsedAux
+    variable = RRC
+    coupled_variables = 'em_density Dp_density'
+    expression = '(5.754799703061313e+2*em_density*Dp_density)/6.022e+23'
   []
 []
 
@@ -139,7 +260,7 @@
   []
   [gas_species_0]
     type = ADHeavySpecies
-    heavy_species_name = D+
+    heavy_species_name = Dp
     heavy_species_mass = 3.34e-27
     heavy_species_charge = 1.0
   []
@@ -151,7 +272,7 @@
   []
   [gas_species_2]
     type = ADHeavySpecies
-    heavy_species_name = D2+
+    heavy_species_name = D2p
     heavy_species_mass = 6.68e-27
     heavy_species_charge = 0.0
   []
@@ -166,63 +287,60 @@
 #CRANE's Reactions Action that inputs the reactions as source terms for the variables
 [Reactions]
   [Gas]
-    #Name of each variable on the reactant side
-    species = 'D+ em D D2 D2+'
-    #Define type of coefficient (rate or townsend)
+    #species = 'Dp em D D2 D2p'
+    species = 'Dp em D D2p'
+    aux_species = 'D2'
+    gas_species = 'D2'
     reaction_coefficient_format = 'rate'
-    #Define if using log form
     use_log = true
-    #Define if using automatic differentiation
     use_ad = true
-    #Define which material block the reactions take place.
-    # For undefine blocks, naming starts at 0
     block = 0
     #Define reactions and coefficients
-    reactions = 'em + D -> em + em + D+         : 1.7628661330328915e+10
-                 em + D2 -> em + em + D2+       : 2.7182957212183056e+10
-                 em + D2+ -> em + em + D+ + D+  : 6.230347391224091e+9
+    reactions = 'em + D -> em + em + Dp         : 1.7628661330328915e+10
+                 em + D2 -> em + em + D2p       : 2.7182957212183056e+10
+                 em + D2p -> em + em + Dp + Dp  : 6.230347391224091e+9
                  em + D2 -> em + D + D          : 3.8085391841803265e+9
-                 em + D2 -> em + em + D + D+    : 1.4387980308002887e+9
-                 em + D2+ -> em + D + D+        : 6.643235489590501e+10
-                 em + D2+ -> D + D              : 6.952473833561004e+8
-                 D+ + D2 -> D + D2+             : 8.85016857412739e+9
-                 D+ + em -> D                   : 5.754799703061313e+2'
+                 em + D2 -> em + em + D + Dp    : 1.4387980308002887e+9
+                 em + D2p -> em + D + Dp        : 6.643235489590501e+10
+                 em + D2p -> D + D              : 6.952473833561004e+8
+                 Dp + em -> D                   : 5.754799703061313e+2'
+  []
 []
 
 #Initial conditions for variables.
 #If left undefine, the IC is zero
 [ICs]
-  [D+_ic]
+  [Dp_ic]
     type = FunctionIC
-    variable = D+
-    function = 'log(1e18/6.022e23)'
+    variable = Dp
+    function = 'log(1e14/6.022e23)'
   []
   [em_ic]
     type = FunctionIC
     variable = em
-    function = 'log((1e18 + 1e18)/6.022e23)'
+    function = 'log((1e14 + 1e10)/6.022e23)'
   []
   [D_ic]
     type = FunctionIC
     variable = D
-    function = 'log(1e20/6.022e23)'
+    function = 'log(1e16/6.022e23)'
   []
-  [D2_ic]
+  #[D2_ic]
+  #  type = FunctionIC
+  #  variable = D2
+  #  function = 'log(1e16/6.022e23)'
+  #[]
+  [D2p_ic]
     type = FunctionIC
-    variable = D2
-    function = 'log(1e20/6.022e23)'
-  []
-  [D2+_ic]
-    type = FunctionIC
-    variable = D2+
-    function = 'log(1e18/6.022e23)'
+    variable = D2p
+    function = 'log(1e10/6.022e23)'
   []
 []
 
 [Functions]
   [density_ic_func]
     type = ParsedFunction
-    expression = 'log(1.5e20/6.022e23)'
+    expression = 'log(1e20/6.022e23)'
   []
 []
 
@@ -246,14 +364,14 @@
 # solve type (Newton, PJFNK, etc.) and tolerances
 [Executioner]
   type = Transient
-  end_time = 1e+5
-  dt = 1e-0
-  dtmin = 1e-14
-  dtmax = 1e-2
-  #scheme = bdf2
+  end_time = 1e+9
+  dt = 1e+5
+  dtmin = 1e-20
+  #dtmax = 1e-2
+  scheme = bdf2
   #scheme = explicit-euler
   solve_type = NEWTON
-  steady_state_detection = true
+  #steady_state_detection = true
 
   petsc_options = '-snes_converged_reason -snes_linesearch_monitor'
   petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount -snes_linesearch_minlambda'
